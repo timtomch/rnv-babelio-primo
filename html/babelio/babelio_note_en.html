@@ -1,0 +1,8 @@
+<div class="babelio" ng-init="item = $ctrl.parentCtrl.result">
+    <!-- Babelio: note moyenne -->
+    <div class="babelio-noteglobale" ng-if="item.babelio.note">
+        <div class="babelio-section">Average rating</div>
+        <div class="babelio-rating"><div ng-repeat="n in [1, 2, 3, 4, 5]" ng-class="(n <= +(item.babelio.note) + 0.5) ? 'checked' : 'unchecked'"></div></div>
+        {{item.babelio.note}}/5 (over {{item.babelio.nb_notes}} ratings) on Babelio.com. <a href="#babelio">More...</a>
+    </div>
+</div>
