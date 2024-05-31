@@ -3,6 +3,6 @@
     <div class="babelio-noteglobale" ng-if="item.babelio.note">
         <div class="babelio-section">Durchschnittliche Bewertung</div>
         <div class="babelio-rating"><div ng-repeat="n in [1, 2, 3, 4, 5]" ng-class="(n <= +(item.babelio.note) + 0.5) ? 'checked' : 'unchecked'"></div></div>
-        {{item.babelio.note}}/5 (über {{item.babelio.nb_notes}} Bewertungen) auf Babelio.com. <a href="#babelio">Mehr...</a>
+        {{item.babelio.note}}/5 (über {{item.babelio.nb_notes}} Bewertungen) auf Babelio.com. <a ng-click="scrollToBabelMain()">Mehr...</a>
     </div>
 </div>

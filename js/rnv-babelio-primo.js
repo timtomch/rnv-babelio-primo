@@ -158,6 +158,11 @@ app
             };
 
         }])
+        .controller('babelthequeScrollController', ['$scope', '$location', '$anchorScroll', function($scope, $location, $anchorScroll){
+            $scope.scrollToBabelMain = function(){
+                $anchorScroll('babelio');
+            }
+        }])
         .filter('cleanUrl', function() {
             return function(link) {
                 return link.startsWith('http') ? link : 'https://' + link;
@@ -184,6 +189,7 @@ app
         })
         .component('prmSearchResultAvailabilityLineAfter', {
             bindings: { parentCtrl: '<' },
+            controller: 'babelthequeScrollController',
             templateUrl: function($location) {
                 // Access the locale parameter from current URL
                 var currentLocale = 'fr';
