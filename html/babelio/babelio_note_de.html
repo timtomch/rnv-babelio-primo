@@ -1,4 +1,4 @@
-<div class="babelio" ng-init="item = $ctrl.parentCtrl.result">
+<div class="babelio" ng-if="displayBabelWidget()" ng-init="item = $ctrl.parentCtrl.result">
     <!-- Babelio: note moyenne -->
     <div class="babelio-noteglobale" ng-if="item.babelio.note">
         <div class="babelio-section">Bewertung: </div>

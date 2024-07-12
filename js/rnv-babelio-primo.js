@@ -166,6 +166,11 @@ app
             $scope.scrollToBabelMain = function(){
                 $anchorScroll('babelio');
             }
+            
+            // Function to restrict widget fulldisplay pages only
+            $scope.displayBabelWidget = function() {
+                return $location.path().toLowerCase() == '/fulldisplay';
+            };
         }])
         .filter('cleanUrl', function() {
             return function(link) {
