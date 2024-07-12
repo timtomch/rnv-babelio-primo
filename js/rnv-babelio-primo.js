@@ -45,72 +45,76 @@ app
                 fetchBabelioData : fetchBabelioData
             };
         }])
-        .controller('rnvBabelthequeController', ['$scope', 'rnvBabelthequeService', function ($scope, rnvBabelthequeService) {
+        .controller('rnvBabelthequeController', ['$scope', '$location', 'rnvBabelthequeService', function ($scope, $location, rnvBabelthequeService) {
         
             var vm = this;
             this.$onInit = function() {
-                console.log('RNV Babeltheque INIT');
-                $scope.$watch(
-                    function () {
-                        if (angular.isDefined(vm.parentCtrl.item)) {
-                            // As soon as an item is loaded, watch for changes
-                            return vm.parentCtrl.item;
-                        }
-                        return 0;
-                    },
-                    function () {
-                        // Look for items with ISBNs.
-                        // This listener function is called both during initial run and whenever the watched variable changes.
-                        if (angular.isDefined(vm.parentCtrl.item.pnx.addata.isbn)){
-                            console.log('RNV Babelthèque start');
-                            vm.parentCtrl.item.babelthequeActiveIsbn = vm.parentCtrl.item.pnx.addata.isbn[0];
+                
+                // Only run on results display pages
+                if ($location.path().toLowerCase() == '/fulldisplay') {
+                    console.log('RNV Babeltheque INIT');
+                    $scope.$watch(
+                        function () {
+                            if (angular.isDefined(vm.parentCtrl.item)) {
+                                // As soon as an item is loaded, watch for changes
+                                return vm.parentCtrl.item;
+                            }
+                            return 0;
+                        },
+                        function () {
+                            // Look for items with ISBNs.
+                            // This listener function is called both during initial run and whenever the watched variable changes.
+                            if (angular.isDefined(vm.parentCtrl.item.pnx.addata.isbn)){
+                                console.log('RNV Babelthèque start');
+                                vm.parentCtrl.item.babelthequeActiveIsbn = vm.parentCtrl.item.pnx.addata.isbn[0];
                             
-                            // Unless the Babelio data was fetched already, call the API
-                            if (!angular.isDefined(vm.parentCtrl.item.babelio)){
-                                console.log('RNV Babelthèque API call');
-                                console.log(vm.parentCtrl.item.babelthequeActiveIsbn);
-                                rnvBabelthequeService.fetchBabelioData(vm.parentCtrl.item.babelthequeActiveIsbn)
-                                .then((data) => {
-                                    try{
-                                        if (!data)return;
-                                        // No data was returned from the API, presumably this title is not in Babelio.
+                                // Unless the Babelio data was fetched already, call the API
+                                if (!angular.isDefined(vm.parentCtrl.item.babelio)){
+                                    console.log('RNV Babelthèque API call');
+                                    console.log(vm.parentCtrl.item.babelthequeActiveIsbn);
+                                    rnvBabelthequeService.fetchBabelioData(vm.parentCtrl.item.babelthequeActiveIsbn)
+                                    .then((data) => {
+                                        try{
+                                            if (!data)return;
+                                            // No data was returned from the API, presumably this title is not in Babelio.
                                     
-                                        // Limit the number of items displayed outside of modal window
-                                        let displayLimit = 3;
+                                            // Limit the number of items displayed outside of modal window
+                                            let displayLimit = 3;
                                         
-                                        // Limit the size of user reviews displayed outside of modal window (number of characters)
-                                        let maxReviewLength = 500;
+                                            // Limit the size of user reviews displayed outside of modal window (number of characters)
+                                            let maxReviewLength = 500;
                                     
-                                        // Trim the list of user reviews and citations to only display the first 3
-                                        data.critiques_notice = data.critiques_notice.slice(0,displayLimit);
-                                        data.critiques_presse_affichees = data.critiques_presse.slice(0,displayLimit);
-                                        data.citations_notice = data.citations_notice.slice(0,displayLimit);
+                                            // Trim the list of user reviews and citations to only display the first 3
+                                            data.critiques_notice = data.critiques_notice.slice(0,displayLimit);
+                                            data.critiques_presse_affichees = data.critiques_presse.slice(0,displayLimit);
+                                            data.citations_notice = data.citations_notice.slice(0,displayLimit);
                                     
-                                        // Add a toggle value for user reviews
-                                        data.critiques_notice.forEach((critique) => {
-                                            if (critique.texte.length > maxReviewLength){
-                                                critique.toggle = true;
-                                                critique.open = false;
-                                            }
-                                            else {
-                                                critique.toggle = false;
-                                                critique.open = true;
-                                            }
-                                            });
+                                            // Add a toggle value for user reviews
+                                            data.critiques_notice.forEach((critique) => {
+                                                if (critique.texte.length > maxReviewLength){
+                                                    critique.toggle = true;
+                                                    critique.open = false;
+                                                }
+                                                else {
+                                                    critique.toggle = false;
+                                                    critique.open = true;
+                                                }
+                                                });
                                     
-                                        vm.displayLimit = displayLimit;
-                                        vm.parentCtrl.item.babelio = data;
+                                            vm.displayLimit = displayLimit;
+                                            vm.parentCtrl.item.babelio = data;
                                     
-                                    }
-                                    catch(e){
-                                        console.error("RNV Babeltheque ERREUR lors de l'appel d'API: \n");
-                                        console.error(e.message);
-                                    }
-                                })
+                                        }
+                                        catch(e){
+                                            console.error("RNV Babeltheque ERREUR lors de l'appel d'API: \n");
+                                            console.error(e.message);
+                                        }
+                                    })
+                                }
                             }
                         }
-                    }
-                );
+                    );
+                }
             }
 
             // Function to display all reviews
