@@ -2,21 +2,19 @@ app
         .factory('rnvBabelthequeService', ['$http', '$sce',function($http, $sce){
             function fetchBabelioData(isbn, type = 'all', page = 1){
                 
-                // Replace these with actual API endpoints.
-                let baseUrlAll = 'https://path/to/babelio.php';
-                let baseUrlReviews = 'https://path/to/babelio_critiques.php';
-                let baseUrlCitations = 'https://path/to/babelio_citations.php';
-
+                // Replace this variable with actual API endpoint.
+                let baseUrl = 'https://path/to/babelio.php';
+            
                 let url = '';
 
                 if (type == 'all') {
-                    url = baseUrlAll + '?isbn=' + isbn;
+                    url = baseUrl + '?type=all&isbn=' + isbn;
                 }
                 else if (type == 'reviews') {
-                    url = baseUrlReviews + '?isbn=' + isbn + '&page=' + page;
+                    url = baseUrl + '?type=reviews&isbn=' + isbn + '&page=' + page;
                 }
                 else if (type == 'citations') {
-                    url = baseUrlCitations + '?isbn=' + isbn + '&page=' + page;
+                    url = baseUrl + '?type=citations&isbn=' + isbn + '&page=' + page;
                 }
                 else {
                     console.log('RNV Babeltheque ERREUR dans fetchBabelioData: paramètre manquant.');
