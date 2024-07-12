@@ -28,6 +28,10 @@ prm-search-bar {
     margin-bottom: 10px;
 }
 
+.babelio-noteglobale div {
+    display: inline-block;
+}
+
 .babelio-open {
     max-height: none;
 }
@@ -40,12 +44,21 @@ prm-search-bar {
 .babelio-rating {
   display: flex;
   align-items: center;
-  font-size: 2em;
 }
 
 .babelio-critique .babelio-rating {
+    font-size: 1.1em;
+}
+
+.babelio-critique .babelio-date {
     float:right;
-    font-size: 1em;
+    font-size: 0.9em;
+    color:#808080;
+}
+
+
+.babelio-noteglobale .babelio-rating {
+    font-size: 1.3em;
 }
 
 .babelio-rating div.checked::before {
