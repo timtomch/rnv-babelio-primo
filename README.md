@@ -25,7 +25,7 @@ Binding directives: `prm-search-result-availability-line-after` (for star rating
 
 ### JavaScript
 
-Copy the content of [`rnv-babelio-primo.js`](rnv-babelio-primo.js) to your `custom.js` file.
+Copy the content of [`rnv-babelio-primo.js`](js/rnv-babelio-primo.js) to your `custom.js` file.
 
 Make sure to add this content *after* the following lines
 
