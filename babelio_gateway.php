@@ -26,7 +26,7 @@ $referrer=$_SERVER['HTTP_REFERER'];
 if (in_array($referrer, $allowed_referrers) || $disable_referrer_check) {
     
     $hash = base64_encode(hash_hmac("sha256", $id.$timestamp.$action.$isbn, $token, True));
-    $post_fields = array("id"=> $id, "action" => "tout", "isbn" => $isbn, "timestamp" => $timestamp,"hash" => $hash,"json"=>1);
+    $post_fields = array("id"=> $id, "action" => $action, "isbn" => $isbn, "timestamp" => $timestamp,"hash" => $hash,"json"=>1);
     
     switch($type) {
         case 'all':
