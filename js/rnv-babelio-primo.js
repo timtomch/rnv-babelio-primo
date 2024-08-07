@@ -50,7 +50,7 @@ app
                 
                 // Only run on results display pages
                 if ($location.path().toLowerCase() == '/fulldisplay') {
-                    console.log('RNV Babeltheque INIT');
+                    //console.log('RNV Babeltheque INIT');
                     $scope.$watch(
                         function () {
                             if (angular.isDefined(vm.parentCtrl.item)) {
@@ -63,19 +63,18 @@ app
                             // Look for items with ISBNs.
                             // This listener function is called both during initial run and whenever the watched variable changes.
                             if (angular.isDefined(vm.parentCtrl.item.pnx.addata.isbn)){
-                                console.log('RNV Babelthèque start');
+
                                 vm.parentCtrl.item.babelthequeActiveIsbn = vm.parentCtrl.item.pnx.addata.isbn[0];
                             
                                 // Unless the Babelio data was fetched already, call the API
                                 if (!angular.isDefined(vm.parentCtrl.item.babelio)){
-                                    console.log('RNV Babelthèque API call');
-                                    console.log(vm.parentCtrl.item.babelthequeActiveIsbn);
+
                                     rnvBabelthequeService.fetchBabelioData(vm.parentCtrl.item.babelthequeActiveIsbn)
                                     .then((data) => {
                                         try{
-                                            if (!data)return;
+                                            if (!data || !data.id_oeuvre)return;
                                             // No data was returned from the API, presumably this title is not in Babelio.
-                                    
+                                            
                                             // Limit the number of items displayed outside of modal window
                                             let displayLimit = 3;
                                         
@@ -83,12 +82,12 @@ app
                                             let maxReviewLength = 500;
                                     
                                             // Trim the list of user reviews and citations to only display the first 3
-                                            data.critiques_notice = data.critiques_notice.slice(0,displayLimit);
-                                            data.critiques_presse_affichees = data.critiques_presse.slice(0,displayLimit);
-                                            data.citations_notice = data.citations_notice.slice(0,displayLimit);
+                                            if (data.critiques_notice) data.critiques_notice = data.critiques_notice.slice(0,displayLimit);
+                                            if (data.critiques_presse_affichees) data.critiques_presse_affichees = data.critiques_presse.slice(0,displayLimit);
+                                            if (data.citations_notice) data.citations_notice = data.citations_notice.slice(0,displayLimit);
                                     
                                             // Add a toggle value for user reviews
-                                            data.critiques_notice.forEach((critique) => {
+                                            if (data.critiques_notice) data.critiques_notice.forEach((critique) => {
                                                 if (critique.texte.length > maxReviewLength){
                                                     critique.toggle = true;
                                                     critique.open = false;
@@ -117,14 +116,13 @@ app
 
             // Function to display all reviews
             $scope.babelthequeDisplayReviews = function(pageNr=1) {
-                console.log("Display reviews page: " + pageNr);
 
                 rnvBabelthequeService.fetchBabelioData(vm.parentCtrl.item.babelthequeActiveIsbn,'reviews',pageNr)
                             .then((data) => {
                                 try{
                                     if (!data)return;
                                     vm.parentCtrl.item.babelio.critiques_affichees = data.critiques;
-                                    console.log(vm.parentCtrl.item.babelio);
+
                                     vm.parentCtrl.item.babelthequeDisplayReviewsModal = true;
                                     vm.parentCtrl.item.babelthequeDisplayReviewsPage = pageNr;
                                 }
@@ -139,14 +137,13 @@ app
 
             // Function to display all citations
             $scope.babelthequeDisplayCitations = function(pageNr=1) {
-                console.log("Display citations page: " + pageNr);
 
                 rnvBabelthequeService.fetchBabelioData(vm.parentCtrl.item.babelthequeActiveIsbn,'citations',pageNr)
                             .then((data) => {
                                 try{
                                     if (!data)return;
                                     vm.parentCtrl.item.babelio.citations_affichees = data.citations;
-                                    console.log(vm.parentCtrl.item.babelio);
+
                                     vm.parentCtrl.item.babelthequeDisplayCitationsModal = true;
                                     vm.parentCtrl.item.babelthequeDisplayCitationsPage = pageNr;
                                 }
@@ -175,10 +172,14 @@ app
                 return link.startsWith('http') ? link : 'https://' + link;
             }
         })
-        .filter('cleanDate', function() {
+        .filter('cleanDate', function($location) {
+            var currentLocale = 'fr';
+            if (angular.isDefined($location.$$search.lang)) {
+                currentLocale = $location.$$search.lang;
+            }
             return function(dateString) {
                 let dateObj = new Date(dateString);
-                return dateObj.toLocaleString('fr-CH', { dateStyle: 'medium' });
+                return dateObj.toLocaleString(currentLocale, { dateStyle: 'medium' });
             }
         })
         .component('prmActionListAfter', {
