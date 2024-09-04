@@ -195,7 +195,7 @@ app
                 return '/discovery/custom/' + LOCAL_VID + '/html/babelio/babelio_' + currentLocale + '.html';
             }
         })
-        .component('prmSearchResultAvailabilityLineAfter', {
+        .component('prmSearchResultJournalIndicationLineAfter', {
             bindings: { parentCtrl: '<' },
             controller: 'babelthequeScrollController',
             templateUrl: function($location) {
