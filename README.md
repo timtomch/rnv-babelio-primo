@@ -43,6 +43,9 @@ and *before* the one that looks like this
 })();
 ```
 
+On the Renouvaud network, this code is deployed on the central package. Therefore, some logic has been included to control on which view the module is
+enabled (around line 55 of [`rnv-babelio-primo.js`](js/rnv-babelio-primo.js#L55)). Be sure to alter this logic to your own use case.
+
 ### HTML templates
 
 Place the HTML templates included inside a `babelio` directory within your view's `html` directory. Your view's file structure should look something like this
