@@ -1,8 +1,9 @@
 <div class="babelio" ng-if="displayBabelWidget()" ng-init="item = $ctrl.parentCtrl.item">
     <!-- Babelio: note moyenne -->
-    <div class="babelio-noteglobale" ng-if="item.babelio.note">
+    <div class="babelio-noteglobale" ng-if="item.babelio.nb_notes > 0">
         <div class="babelio-section">Rating:</div>
         <div class="babelio-rating"><div ng-repeat="n in [1, 2, 3, 4, 5]" ng-class="(n <= +(item.babelio.note) + 0.5) ? 'checked' : 'unchecked'"></div></div>
-        {{item.babelio.note}}/5 ({{item.babelio.nb_notes}} ratings). <span ng-if="item.babelio.critiques_notice.length > 0"><a ng-click="scrollToBabelMain()">See reader reviews.</a></span>
+        {{item.babelio.note}}/5 ({{item.babelio.nb_notes}} ratings). <span ng-if="item.babelio.critiques_notice.length > 0"><a ng-click="scrollToBabelMain()">See reader reviews.</a></span><span ng-if="!(item.babelio.critiques_notice.length > 0)">Data provided by external platform <a target="_blank" ng-href="https://www.babelio.com/livres/-/{{item.babelio.id_oeuvre}}">Babelio.com
+                <prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new"></prm-icon></a></span>
     </div>
 </div>

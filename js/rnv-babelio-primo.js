@@ -46,10 +46,13 @@ app
         .controller('rnvBabelthequeController', ['$scope', '$location', 'rnvBabelthequeService', function ($scope, $location, rnvBabelthequeService) {
         
             var vm = this;
+            var vid = $location.search().vid || '';
+            
             this.$onInit = function() {
                 
-                // Only run on results display pages
-                if ($location.path().toLowerCase() == '/fulldisplay') {
+                // Only run on results display pages and on specific views
+                if (($location.path().toLowerCase() == '/fulldisplay') && 
+                    (vid == '41BCULAUSA_LIB:VU_DGEP' || vid.startsWith('41BCULAUSA_SCHOOL:'))) {
                     //console.log('RNV Babeltheque INIT');
                     $scope.$watch(
                         function () {

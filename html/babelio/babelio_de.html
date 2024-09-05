@@ -1,5 +1,5 @@
 <div class="babelio" id="babelio" ng-init="item = $ctrl.parentCtrl.item">
-    <div ng-if="item.babelio">
+    <div ng-if="(item.babelio && (item.babelio.critiques_notice.length > 0 || item.babelio.prix.length > 0 || item.babelio.citations_notice.length > 0))">
         <div class="section-head">
             <div layout="row" layout-align="center center" class="layout-align-center-center layout-row">
                 <h4 class="section-title md-title light-text">Daten aus der externen Quelle <a target="_blank" ng-href="https://www.babelio.com/livres/-/{{item.babelio.id_oeuvre}}">Babelio.com
