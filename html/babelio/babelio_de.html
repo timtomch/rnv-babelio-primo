@@ -35,6 +35,24 @@
                     </div>
                     <div ng-if="item.babelio.nb_critiques > $ctrl.displayLimit"><a ng-click="babelthequeDisplayReviews()">{{item.babelio.nb_critiques}} Rezensionen zu diesem Titel anzeigen</a></div>
                 </div>
+                <!-- Babelio: prix littéraires -->
+                <div class="babelio-prix" ng-if="(item.babelio.prix && item.babelio.prix.length > 0)">
+                    <div class="babelio-section">Literarische Auszeichnungen</div>
+                    <div class="babelio-prix" ng-repeat="prix in item.babelio.prix">
+                        <div>
+                            {{prix.titre}}, {{prix.annee}}
+                        </div>
+                    </div>
+                </div>
+                <!-- Babelio: citations (affichage direct) -->
+                <div ng-if="(item.babelio.citations_notice && item.babelio.citations_notice.length > 0)">
+                    <div class="babelio-section">Zitate aus diesem Titel ({{item.babelio.citations_notice.length}} von {{item.babelio.nb_citations}}<span ng-if="item.babelio.nb_citations > $ctrl.displayLimit">| <a ng-click="babelthequeDisplayCitations()">alle anzeigen</a></span>)</div>
+                    <div class="babelio-citation" ng-repeat="citation in item.babelio.citations_notice">
+                        <blockquote>{{citation.texte}}</blockquote>
+                        <div>Vermittelt von <span class="babelio-username">{{citation.login}}</span> am {{citation.dt | cleanDate}}</div>
+                    </div>
+                    <div ng-if="item.babelio.nb_citations > $ctrl.displayLimit"><a ng-click="babelthequeDisplayCitations()">{{item.babelio.nb_citations}} Zitate anzeigen</a></div>
+                </div>
             </div>
         </div>
         <!-- Babelio: Fenêtre modale pour les critiques de lecteurs -->
