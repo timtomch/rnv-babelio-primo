@@ -3,41 +3,49 @@
         <div class="section-head">
             <div layout="row" layout-align="center center" class="layout-align-center-center layout-row">
                 <h4 class="section-title md-title light-text">Daten aus der externen Quelle <a target="_blank" ng-href="https://www.babelio.com/livres/-/{{item.babelio.id_oeuvre}}">Babelio.com
-                <prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new">
-                </prm-icon></a></h4>
+                        <prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new">
+                        </prm-icon>
+                    </a></h4>
                 <md-divider flex></md-divider>
-           </div>
+            </div>
         </div>
         <div class="section-body">
             <div class="spaced-rows">
                 <!-- Babelio: avis de lecteurs (affichage direct) -->
                 <div ng-if="(item.babelio.critiques_notice && item.babelio.critiques_notice.length > 0)">
-                    <div class="babelio-section">Leser-Rezensionen ({{item.babelio.critiques_notice.length}} von {{item.babelio.nb_critiques}}<span ng-if="item.babelio.nb_critiques > $ctrl.displayLimit">| <a ng-click="babelthequeDisplayReviews()">alle anzeigen</a></span>)
+                    <div layout="row" layout-align="center center" class="layout-align-center-center layout-row">
+                        <div class="babelio-section">Leser-Rezensionen ({{item.babelio.critiques_notice.length}} von {{item.babelio.nb_critiques}}<span ng-if="item.babelio.nb_critiques > $ctrl.displayLimit">| <a ng-click="babelthequeDisplayReviews()">alle anzeigen</a></span>)</div>
+                        <md-divider flex></md-divider>
                     </div>
                     <div class="babelio-critique" ng-repeat="critique in item.babelio.critiques_notice">
                         <div class="babelio-avatar">
-                            <img src="https://www.babelio.com/{{critique.photo}}"/>
+                            <img src="https://www.babelio.com/{{critique.photo}}" />
                         </div>
                         <div class="babelio-critique_content">
                             <div>
                                 <div class="babelio-date">{{critique.dt | cleanDate}}</div>
                                 <div class="babelio-username">{{critique.login}}</div>
-                                <div class="babelio-rating"><div ng-repeat="n in [1, 2, 3, 4, 5]" ng-class="n <= critique.note ? 'checked' : 'unchecked'"></div></div>
+                                <div class="babelio-rating">
+                                    <div ng-repeat="n in [1, 2, 3, 4, 5]" ng-class="n <= critique.note ? 'checked' : 'unchecked'"></div>
+                                </div>
                             </div>
                             <div ng-class="critique.open ? 'babelio-open' : 'babelio-closed'" ng-bind-html="critique.texte.replaceAll('\r\n','<br/>')"></div>
                             <div ng-if="critique.lien">
                                 [Link unterdrückt]
                             </div>
                             <div ng-if="critique.toggle"><a ng-click="critique.open = !critique.open">
-                                {{critique.open ? '▲ Weniger zeigen' : '▼ Mehr zeigen'}}
-                              </a></div>
+                                    {{critique.open ? '▲ Weniger zeigen' : '▼ Mehr zeigen'}}
+                                </a></div>
                         </div>
                     </div>
                     <div ng-if="item.babelio.nb_critiques > $ctrl.displayLimit"><a ng-click="babelthequeDisplayReviews()">{{item.babelio.nb_critiques}} Rezensionen zu diesem Titel anzeigen</a></div>
                 </div>
                 <!-- Babelio: prix littéraires -->
-                <div class="babelio-prix" ng-if="(item.babelio.prix && item.babelio.prix.length > 0)">
-                    <div class="babelio-section">Literarische Auszeichnungen</div>
+                <div id="babelio-prix" ng-if="(item.babelio.prix && item.babelio.prix.length > 0)">
+                    <div layout="row" layout-align="center center" class="layout-align-center-center layout-row">
+                        <div class="babelio-section">Literarische Auszeichnungen</div>
+                        <md-divider flex></md-divider>
+                    </div>
                     <div class="babelio-prix" ng-repeat="prix in item.babelio.prix">
                         <div>
                             {{prix.titre}}, {{prix.annee}}
@@ -46,7 +54,10 @@
                 </div>
                 <!-- Babelio: citations (affichage direct) -->
                 <div ng-if="(item.babelio.citations_notice && item.babelio.citations_notice.length > 0)">
-                    <div class="babelio-section">Zitate aus diesem Titel ({{item.babelio.citations_notice.length}} von {{item.babelio.nb_citations}}<span ng-if="item.babelio.nb_citations > $ctrl.displayLimit">| <a ng-click="babelthequeDisplayCitations()">alle anzeigen</a></span>)</div>
+                    <div layout="row" layout-align="center center" class="layout-align-center-center layout-row">
+                        <div class="babelio-section">Zitate aus diesem Titel ({{item.babelio.citations_notice.length}} von {{item.babelio.nb_citations}}<span ng-if="item.babelio.nb_citations > $ctrl.displayLimit">| <a ng-click="babelthequeDisplayCitations()">alle anzeigen</a></span>)</div>
+                        <md-divider flex></md-divider>
+                    </div>
                     <div class="babelio-citation" ng-repeat="citation in item.babelio.citations_notice">
                         <blockquote>{{citation.texte}}</blockquote>
                         <div>Vermittelt von <span class="babelio-username">{{citation.login}}</span> am {{citation.dt | cleanDate}}</div>
@@ -64,27 +75,30 @@
                     <a class="babelio-back" ng-if="item.babelthequeDisplayReviewsPage > 1" ng-click="babelthequeDisplayReviews(item.babelthequeDisplayReviewsPage - 1)">◀ Vorherige Rezensionen</a>
                     <a class="babelio-forward" ng-if="item.babelthequeDisplayReviewsPage < item.babelio.nb_critiques/10" ng-click="babelthequeDisplayReviews(item.babelthequeDisplayReviewsPage + 1)">Nächste Rezensionen ▶</a>
                 </div>
-                
-                    <div class="babelio-critique" ng-repeat="critique in item.babelio.critiques_affichees">
-                        <div class="babelio-avatar">
-                            <img src="https://www.babelio.com/{{critique.photo}}"/>
+
+                <div class="babelio-critique" ng-repeat="critique in item.babelio.critiques_affichees">
+                    <div class="babelio-avatar">
+                        <img src="https://www.babelio.com/{{critique.photo}}" />
+                    </div>
+                    <div class="babelio-critique_content">
+                        <div class="babelio-rating">
+                            <div ng-repeat="n in [1, 2, 3, 4, 5]" ng-class="n <= critique.note ? 'checked' : 'unchecked'"></div>
                         </div>
-                        <div class="babelio-critique_content">
-                            <div class="babelio-rating"><div ng-repeat="n in [1, 2, 3, 4, 5]" ng-class="n <= critique.note ? 'checked' : 'unchecked'"></div></div>
-                            <div>
-                                <span class="babelio-username">{{critique.login}}</span> (vermittelt am {{critique.dt | cleanDate}}):
-                            </div>
-                            <div class="babelio-open" ng-bind-html="critique.texte.replaceAll('\r\n','<br/>')"></div>
-                            <div ng-if="critique.lien">
-                                <div class="babelio-lien" >
-                                    Dieser Link wurde unterdrückt. Lesen Sie die ursprüngliche Rezension auf <a target="_blank" ng-href="https://www.babelio.com/livres/-/{{item.babelio.id_oeuvre}}">Babelio.com
+                        <div>
+                            <span class="babelio-username">{{critique.login}}</span> (vermittelt am {{critique.dt | cleanDate}}):
+                        </div>
+                        <div class="babelio-open" ng-bind-html="critique.texte.replaceAll('\r\n','<br/>')"></div>
+                        <div ng-if="critique.lien">
+                            <div class="babelio-lien">
+                                Dieser Link wurde unterdrückt. Lesen Sie die ursprüngliche Rezension auf <a target="_blank" ng-href="https://www.babelio.com/livres/-/{{item.babelio.id_oeuvre}}">Babelio.com
                                     <prm-icon external-link="" icon-type="svg" svg-icon-set="primo-ui" icon-definition="open-in-new">
-                                    </prm-icon></a>.
-                                </div>
+                                    </prm-icon>
+                                </a>.
                             </div>
                         </div>
                     </div>
-                
+                </div>
+
                 <div class="babelio-nav">
                     <a class="babelio-back" ng-if="item.babelthequeDisplayReviewsPage > 1" ng-click="babelthequeDisplayReviews(item.babelthequeDisplayReviewsPage - 1)">◀ Vorherige Rezensionen</a>
                     <a class="babelio-forward" ng-if="item.babelthequeDisplayReviewsPage < item.babelio.nb_critiques/10" ng-click="babelthequeDisplayReviews(item.babelthequeDisplayReviewsPage + 1)">Nächste Rezensionen ▶</a>
