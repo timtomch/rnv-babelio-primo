@@ -51,7 +51,9 @@ app
             this.$onInit = function() {
                 
                 // Only run on results display pages and on specific views
-                if (($location.path().toLowerCase() == '/fulldisplay') && 
+                if (($location.path().toLowerCase() == '/fulldisplay') &&
+                    // (vid == '41BCULAUSA_LIB:VU2' || vid == '41BCULAUSA_LIB:VU_DGEP' || vid.startsWith('41BCULAUSA_SCHOOL:'))) {
+                    // (vid.startsWith('41BCULAUSA_SCHOOL:'))) {
                     (vid == '41BCULAUSA_LIB:VU_DGEP' || vid.startsWith('41BCULAUSA_SCHOOL:'))) {
                     //console.log('RNV Babeltheque INIT');
                     $scope.$watch(
@@ -84,6 +86,10 @@ app
                                             // Limit the size of user reviews displayed outside of modal window (number of characters)
                                             let maxReviewLength = 500;
                                     
+                                            // Do not display citations for the DGEP view
+                                            if (vid == '41BCULAUSA_LIB:VU_DGEP') {
+                                                data.citations_notice= [];
+                                            }
                                             // Trim the list of user reviews and citations to only display the first 3
                                             if (data.critiques_notice) data.critiques_notice = data.critiques_notice.slice(0,displayLimit);
                                             if (data.critiques_presse_affichees) data.critiques_presse_affichees = data.critiques_presse.slice(0,displayLimit);
@@ -195,7 +201,7 @@ app
                     currentLocale = $location.$$search.lang;
                 }
                 // Construct dynamic template URL based on the current locale
-                return '/discovery/custom/' + LOCAL_VID + '/html/babelio/babelio_' + currentLocale + '.html';
+                return '/discovery/custom/' + '41BCULAUSA_NETWORK-CENTRAL_PACKAGE' + '/html/babelio/babelio_' + currentLocale + '.html';
             }
         })
         .component('prmSearchResultJournalIndicationLineAfter', {
@@ -208,6 +214,6 @@ app
                     currentLocale = $location.$$search.lang;
                 }
                 // Construct dynamic template URL based on the current locale
-                return '/discovery/custom/' + LOCAL_VID + '/html/babelio/babelio_note_' + currentLocale + '.html';
+                return '/discovery/custom/' + '41BCULAUSA_NETWORK-CENTRAL_PACKAGE' + '/html/babelio/babelio_note_' + currentLocale + '.html';
             }
         });
